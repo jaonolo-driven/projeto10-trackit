@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import UserContext from '../../contexts/UserContext'
 
-const HabitsCard = ({deleteHabit, create = false, data = null}) => {
+const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null}) => {
     const [formData, setData] = useState(null)
     const [selectedDays, selectDay] = useState(new Array(7).fill(false))
     const {token} = useContext(UserContext)
@@ -15,7 +15,7 @@ const HabitsCard = ({deleteHabit, create = false, data = null}) => {
             data.days.map(e => {a[e-1] = true})
             selectDay(a)
         }
-    })
+    }, [])
 
     const selectButton = (event, i) => {
         event.preventDefault()
@@ -31,7 +31,10 @@ const HabitsCard = ({deleteHabit, create = false, data = null}) => {
 
         axios
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', habit, { headers: {'Authorization': `Bearer ${token.token}`}})
-            .then(() => alert('Salvo com sucesso!'))
+            .then(() => {
+                alert('Salvo com sucesso!')
+                queryHabits()
+            })
             .catch(console.error)
     }
 

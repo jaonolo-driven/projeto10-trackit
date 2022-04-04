@@ -3,49 +3,40 @@ import Header from "../Header"
 import { useContext, useState, useEffect } from "react"
 import UserContext from "../../contexts/UserContext"
 
-import { Link } from 'react-router-dom'
-
-import HabitsCard from "../HabitsCard"
-
 import styled from 'styled-components'
+import TodayCard from "../TodayCard"
 
-const Habits = () => {
+const Today = () => {
     const {token} = useContext(UserContext)
-    const [creating, setCreating] = useState(false)
     const [habits, setHabits] = useState([])
 
     const queryHabits = () => 
         axios
-            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', { headers: {'Authorization': `Bearer ${token.token}`}})
+            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${token.token}`}})
             .then(({data}) => setHabits(data))
             .catch(console.error)
 
-    const deleteHabit = id =>
-        axios
-            .delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, { headers: {'Authorization': `Bearer ${token.token}`}})
-            .then(() => {
-                alert('Hábito deletado com sucesso')
-                queryHabits()
-            })
-            .catch(console.error)
-
     useEffect(queryHabits, [])
+
+    const todayDate = new Date()
+    const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
+    const completed = habits.filter(e => e.done).length
 
     return <> 
         <Header profile={token.image}/>
         <PageContainer>
             <div>
-                <h1>Meus Hábitos</h1>
-                <button onClick={() => setCreating(!creating)}>+</button>
+                <h1>{weekday[todayDate.getDay()]}, {`${todayDate.getDate()}`.padStart(2, '0')}/{`${todayDate.getMonth()}`.padStart(2, '0')}</h1>
+                {habits.length !== 0 ? <h2>
+                    {completed === 0 ? 'Nenhum hábito concluído ainda' : <span className='selected'>{(completed/habits.length)*100}% dos hábitos concluídos</span>}
+                </h2> : <></>}
             </div>
-            {habits.map(e => <HabitsCard data={e} deleteHabit={deleteHabit}/>)}
-            {creating ? <HabitsCard queryHabits={queryHabits} create={true}/> : <></>}
+            {habits.map(e => <TodayCard queryHabits={queryHabits} data={e}/>)}
             {habits.length === 0 ?
                 <p>
                     Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                 </p>
             : <></>}
-            <Link to="/hoje">oi</Link>
         </PageContainer>
     </>
 }
@@ -58,6 +49,10 @@ const PageContainer = styled.main`
     gap: 20px;
     min-height: 100vh;
 
+    span.selected {
+        color: #8FC549
+    }
+
     h1 {
         color: #126BA5;
         font-size: 23px;
@@ -67,14 +62,8 @@ const PageContainer = styled.main`
         display: flex;
         width: 100%;
         justify-content: space-between;
-
-        > button {
-            padding: 0 12px;
-            background-color: #52B6FF;
-            border: none;
-            border-radius: 5px;
-            color: white;
-        }
+        flex-direction: column;
+        gap: 6px
     }
 
     > p {
@@ -85,4 +74,4 @@ const PageContainer = styled.main`
     } 
 `
 
-export default Habits
+export default Today
