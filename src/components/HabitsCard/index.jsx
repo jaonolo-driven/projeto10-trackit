@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
+import { Bars } from 'react-loader-spinner'
 import styled from 'styled-components'
 import axios from 'axios'
 
@@ -6,6 +7,7 @@ import { UserContext } from '../../contexts/UserContext'
 
 const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setCreating}) => {
     const [formData, setData] = useState(null)
+    const [disabled, setDisabled] = useState(false)
     const [selectedDays, selectDay] = useState(new Array(7).fill(false))
     const {user} = useContext(UserContext)
 
@@ -25,6 +27,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
     }
 
     const saveHabit = event => {
+        setDisabled(true)
         event.preventDefault()
         const days = selectedDays.map((e, i) => e ? i + 1 : e).filter(e => e)
         const habit = {name: formData, days: days}
@@ -33,9 +36,13 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', habit, { headers: {'Authorization': `Bearer ${user.token}`}})
             .then(() => {
                 alert('Salvo com sucesso!')
+                setDisabled(false)
                 queryHabits()
             })
-            .catch(console.error)
+            .catch((response) => {
+                console.error(response)
+                setDisabled(false)
+            })
     }
 
     const autoDelete = event => {
@@ -43,27 +50,29 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
         deleteHabit(data.id)
     }
 
-    return <Card> 
-        <div className="ahoy">
+    return <fieldset disabled={disabled}>
+        <Card> 
+            <div className="ahoy">
+                {create ?
+                    <input onChange={({target}) => setData(target.value)} type="text" placeholder='nome do hábito'/>
+                    : <DeleteButtonHolder><p>{data.name}</p><button onClick={autoDelete}></button></DeleteButtonHolder> 
+                }
+                <div>
+                    {['D','S','T','Q','Q','S','S'].map((e, i) => 
+                        <button disabled={!create} className={selectedDays[i] ? 'selected' : ''} onClick={event => selectButton(event, i)}>
+                            {e}
+                        </button>
+                    )}
+                </div>
+            </div>
             {create ?
-                <input onChange={({target}) => setData(target.value)} type="text" placeholder='nome do hábito'/>
-                : <><p>{data.name}</p><button onClick={autoDelete}></button></> 
-            }
-            <div>
-                {['D','S','T','Q','Q','S','S'].map((e, i) => 
-                    <button disabled={!create} className={selectedDays[i] ? 'selected' : ''} onClick={event => selectButton(event, i)}>
-                        {e}
-                    </button>
-                )}
-            </div>
-        </div>
-        {create ?
-            <div>
-                <div onClick={() => setCreating(false)}>Cancelar</div>
-                <button onClick={saveHabit}>Salvar</button>
-            </div>
-        : <></>}
-    </Card>
+                <div>
+                    <div onClick={() => setCreating(false)}>Cancelar</div>
+                    <button onClick={saveHabit}>{disabled ? <Bars height={20} color='#ffffff'/> : 'Salvar'}</button>
+                </div>
+            : <></>}
+        </Card>
+    </fieldset>
 }
 
 export default HabitsCard
@@ -139,4 +148,9 @@ const Card = styled.form`
             gap: 4px;
         }
     }
+`
+
+const DeleteButtonHolder = styled.div`
+    display: flex;
+    justify-content: space-between;
 `

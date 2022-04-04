@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Bars } from 'react-loader-spinner'
 import styled from 'styled-components'
 
 const LoginForm = ({submit, page}) => {
     const [data, setData] = useState(null)
+    const [disabled, setDisabled] = useState(false)
 
     const handleSubmit = event => {
+        setDisabled(true)
         submit(data)
         event.preventDefault()
     }
@@ -17,11 +20,13 @@ const LoginForm = ({submit, page}) => {
     }
 
     return (
-        <Form>
-            {page.input.map(e => <input onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
-            <button type="submit" onClick={handleSubmit}>{page.button}</button>
-            <Link to={page.redirect.value}><p>{page.redirect.text}</p></Link>
-        </Form>
+        <fieldset disabled={disabled}>
+            <Form>
+                {page.input.map(e => <input onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
+                <button type="submit" onClick={handleSubmit}>{disabled ? <Bars height={20} color='#ffffff'/> : page.button}</button>
+                <Link className={disabled ? 'disabledLink' : ''} to={page.redirect.value}><p>{page.redirect.text}</p></Link>
+            </Form>
+        </fieldset>
     )
 }
 
@@ -52,6 +57,9 @@ const Form = styled.form`
         font-size: 21px;
         color: #ffffff;
         background-color: #52B6FF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     img {
@@ -69,5 +77,9 @@ const Form = styled.form`
         :visited {
             color: #52B6FF;
         }
+    }
+
+    .disabledLink {
+        pointer-events: none;
     }
 `
