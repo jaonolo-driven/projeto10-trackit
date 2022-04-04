@@ -2,20 +2,25 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const LoginForm = ({submit: loginUser}) => {
+const LoginForm = ({submit, page}) => {
     const [data, setData] = useState(null)
 
     const handleSubmit = event => {
-        loginUser(data)
+        submit(data)
         event.preventDefault()
+    }
+
+    const changeData = (value, a) => {
+        const newData = {...data}
+        newData[a] = value
+        setData(newData)
     }
 
     return (
         <Form>
-            <input onChange={({target}) => setData({...data, email: target.value})} type="text" placeholder="email"/>
-            <input onChange={({target}) => setData({...data, password: target.value})} type="text" placeholder="senha"/>
-            <button type="submit" onClick={handleSubmit}>Entrar</button>
-            <Link to="/"><p>Não tem uma conta? Cadastre-se!</p></Link>
+            {page.input.map(e => <input onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
+            <button type="submit" onClick={handleSubmit}>{page.button}</button>
+            <Link to={page.redirect.value}><p>{page.redirect.text}</p></Link>
         </Form>
     )
 }

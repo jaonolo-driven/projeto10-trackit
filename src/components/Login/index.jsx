@@ -5,6 +5,14 @@ import LoginForm from './LoginForm'
 import logo from '../../assets/logo.svg'
 
 const Login = () => {
+    const formData = {
+        input: [
+            {text: 'email', value: 'email'},
+            {text: 'senha', value: 'password'}
+        ],
+        button: 'Entrar',
+        redirect: {text: 'Não tem uma conta? Cadastre-se!', value: '/cadastro'}
+    }
 
     const loginUser = data => {
         axios
@@ -15,7 +23,7 @@ const Login = () => {
 
     return <PageContainer>
         <img src={logo} alt="logo" />
-        <LoginForm submit={loginUser}/>
+        <LoginForm submit={loginUser} page={formData}/>
     </PageContainer>
 }
 
