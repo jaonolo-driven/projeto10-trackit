@@ -27,6 +27,7 @@ const Login = () => {
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data)
             .then(({data}) => {
                 setUser(data)
+                localStorage.setItem("user", JSON.stringify(data))
                 navigate('/habitos')
             })
             .catch(response => console.log(response)) 
