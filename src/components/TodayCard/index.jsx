@@ -6,11 +6,11 @@ import { UserContext } from '../../contexts/UserContext'
 
 const TodayCard = ({queryHabits, data}) => {
     const selected = data.done
-    const {token} = useContext(UserContext)
+    const {user} = useContext(UserContext)
 
     const toggleSelect = () =>
         axios
-            .post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${data.id}/${selected ? 'un' : ''}check`, {}, { headers: {'Authorization': `Bearer ${token.token}`} })
+            .post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${data.id}/${selected ? 'un' : ''}check`, {}, { headers: {'Authorization': `Bearer ${user.token}`} })
             .then(queryHabits)
             .catch(console.error)
 

@@ -4,10 +4,10 @@ import axios from 'axios'
 
 import { UserContext } from '../../contexts/UserContext'
 
-const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null}) => {
+const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setCreating}) => {
     const [formData, setData] = useState(null)
     const [selectedDays, selectDay] = useState(new Array(7).fill(false))
-    const {token} = useContext(UserContext)
+    const {user} = useContext(UserContext)
 
     useEffect(() => {
         if(data) {
@@ -30,7 +30,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null}) => 
         const habit = {name: formData, days: days}
 
         axios
-            .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', habit, { headers: {'Authorization': `Bearer ${token.token}`}})
+            .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', habit, { headers: {'Authorization': `Bearer ${user.token}`}})
             .then(() => {
                 alert('Salvo com sucesso!')
                 queryHabits()
@@ -59,7 +59,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null}) => 
         </div>
         {create ?
             <div>
-                <div>Cancelar</div>
+                <div onClick={() => setCreating(false)}>Cancelar</div>
                 <button onClick={saveHabit}>Salvar</button>
             </div>
         : <></>}

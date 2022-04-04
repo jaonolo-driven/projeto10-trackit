@@ -11,7 +11,7 @@ import logo from '../../assets/logo.svg'
 const Login = () => {
     const navigate = useNavigate()
 
-    const {setToken} = useContext(UserContext)
+    const {setUser} = useContext(UserContext)
 
     const formData = {
         input: [
@@ -26,7 +26,7 @@ const Login = () => {
         axios
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data)
             .then(({data}) => {
-                setToken(data)
+                setUser(data)
                 navigate('/habitos')
             })
             .catch(response => console.log(response)) 

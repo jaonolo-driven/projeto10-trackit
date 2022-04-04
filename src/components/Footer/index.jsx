@@ -8,13 +8,13 @@ import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 
 const Footer = () => {
-    const {token} = useContext(UserContext)
+    const {user} = useContext(UserContext)
     const {today} = useContext(TodayContext)
     const [habits, setHabits] = useState([])
 
     const queryHabits = () => 
         axios
-            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${token.token}`}})
+            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${user.token}`}})
             .then(({data}) => setHabits(data))
             .catch(console.error)
 
