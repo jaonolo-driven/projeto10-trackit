@@ -1,5 +1,6 @@
 import axios from "axios"
 import Header from "../Header"
+import Footer from "../Footer"
 import { useContext, useState, useEffect } from "react"
 import UserContext from "../../contexts/UserContext"
 
@@ -38,12 +39,13 @@ const Today = () => {
                 </p>
             : <></>}
         </PageContainer>
+        <Footer/>
     </>
 }
 
 const PageContainer = styled.main`
     background-color: #F2F2F2;
-    padding: 92px 18px 22px 18px;
+    padding: 92px 18px 92px 18px;
     display: flex;
     flex-direction: column;
     gap: 20px;
