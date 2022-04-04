@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 
-import UserContext from '../../contexts/UserContext'
+import { UserContext } from '../../contexts/UserContext'
 
 const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null}) => {
     const [formData, setData] = useState(null)

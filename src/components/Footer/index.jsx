@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import { UserContext, TodayContext } from '../../contexts/UserContext';
 import axios from 'axios';
 
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
@@ -9,6 +9,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 const Footer = () => {
     const {token} = useContext(UserContext)
+    const {today} = useContext(TodayContext)
     const [habits, setHabits] = useState([])
 
     const queryHabits = () => 
@@ -25,7 +26,7 @@ const Footer = () => {
         <Link to='/hoje'>
             <ProgressbarContainer>
                 <CircularProgressbarWithChildren
-                    value={completed/habits.length * 100}
+                    value={today}
                     background={true}
                     backgroundPadding={6}
                     styles={buildStyles({

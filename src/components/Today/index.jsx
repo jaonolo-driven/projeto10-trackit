@@ -2,13 +2,14 @@ import axios from "axios"
 import Header from "../Header"
 import Footer from "../Footer"
 import { useContext, useState, useEffect } from "react"
-import UserContext from "../../contexts/UserContext"
+import { UserContext, TodayContext } from "../../contexts/UserContext"
 
 import styled from 'styled-components'
 import TodayCard from "../TodayCard"
 
 const Today = () => {
     const {token} = useContext(UserContext)
+    const {setToday} = useContext(TodayContext)
     const [habits, setHabits] = useState([])
 
     const queryHabits = () => 
@@ -22,6 +23,7 @@ const Today = () => {
     const todayDate = new Date()
     const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
     const completed = habits.filter(e => e.done).length
+    setToday(completed/habits.length * 100)
 
     return <> 
         <Header profile={token.image}/>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import UserContext from '../../contexts/UserContext'
+import { UserContext } from '../../contexts/UserContext'
 
 import LoginForm from './LoginForm'
 import logo from '../../assets/logo.svg'

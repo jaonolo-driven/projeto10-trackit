@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 
-import UserContext from '../../contexts/UserContext'
+import { UserContext } from '../../contexts/UserContext'
 
 const TodayCard = ({queryHabits, data}) => {
     const selected = data.done
