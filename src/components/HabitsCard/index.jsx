@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import UserContext from '../../contexts/UserContext'
 
-const HabitsCard = ({create = false, data = null}) => {
+const HabitsCard = ({deleteHabit, create = false, data = null}) => {
     const [formData, setData] = useState(null)
     const [selectedDays, selectDay] = useState(new Array(7).fill(false))
     const {token} = useContext(UserContext)
@@ -24,7 +24,7 @@ const HabitsCard = ({create = false, data = null}) => {
         selectDay(a)
     }
 
-    const saveHabit = (event) => {
+    const saveHabit = event => {
         event.preventDefault()
         const days = selectedDays.map((e, i) => e ? i + 1 : e).filter(e => e)
         const habit = {name: formData, days: days}
@@ -35,11 +35,16 @@ const HabitsCard = ({create = false, data = null}) => {
             .catch(console.error)
     }
 
+    const autoDelete = event => {
+        event.preventDefault()
+        deleteHabit(data.id)
+    }
+
     return <Card> 
         <div className="ahoy">
             {create ?
                 <input onChange={({target}) => setData(target.value)} type="text" placeholder='nome do hábito'/>
-                : <><p>{data.name}</p></> 
+                : <><p>{data.name}</p><button onClick={autoDelete}></button></> 
             }
             <div>
                 {['D','S','T','Q','Q','S','S'].map((e, i) => 

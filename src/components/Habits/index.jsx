@@ -12,12 +12,22 @@ const Habits = () => {
     const [creating, setCreating] = useState(false)
     const [habits, setHabits] = useState([])
 
-    useEffect(() => 
+    const queryHabits = () => 
         axios
             .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', { headers: {'Authorization': `Bearer ${token.token}`}})
             .then(({data}) => setHabits(data))
-            .catch(console.error)            
-    )
+            .catch(console.error)
+
+    const deleteHabit = id =>
+        axios
+            .delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, { headers: {'Authorization': `Bearer ${token.token}`}})
+            .then(() => {
+                alert('Hábito deletado com sucesso')
+                queryHabits()
+            })
+            .catch(console.error)
+
+    useEffect(queryHabits)
 
     return  <> 
         <Header profile={token.image}/>
@@ -26,7 +36,7 @@ const Habits = () => {
                 <h1>Meus Hábitos</h1>
                 <button onClick={() => setCreating(!creating)}>+</button>
             </div>
-            {habits.map(e => <HabitsCard data={e}/>)}
+            {habits.map(e => <HabitsCard data={e} deleteHabit={deleteHabit}/>)}
             {creating ? <HabitsCard create={true}/> : <></>}
             {habits ?
                 <p>
