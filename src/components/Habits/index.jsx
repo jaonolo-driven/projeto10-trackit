@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useContext, useState, useEffect } from "react"
-import { UserContext } from "../../contexts/UserContext"
+import { UserContext, TodayContext } from "../../contexts/UserContext"
 
 import { Add } from "react-ionicons"
 import HabitsCard from "../HabitsCard"
@@ -9,6 +9,7 @@ import styled from 'styled-components'
 
 const Habits = () => {
     const {user} = useContext(UserContext)
+    const {queryHabits: queryTodayHabits} = useContext(TodayContext)
     const [creating, setCreating] = useState(false)
     const [habits, setHabits] = useState([])
 
@@ -24,6 +25,7 @@ const Habits = () => {
             .then(() => {
                 alert('Hábito deletado com sucesso')
                 queryHabits()
+                queryTodayHabits()
             })
             .catch(console.error)
 

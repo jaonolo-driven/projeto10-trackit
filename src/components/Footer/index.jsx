@@ -1,32 +1,22 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useState, useEffect, useContext } from 'react';
-import { UserContext, TodayContext } from '../../contexts/UserContext';
-import axios from 'axios';
+import { useContext } from 'react';
+import { TodayContext } from '../../contexts/UserContext';
 
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const Footer = () => {
-    const {user} = useContext(UserContext)
     const {today} = useContext(TodayContext)
-    const [habits, setHabits] = useState([])
 
-    const queryHabits = () => 
-        axios
-            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${user.token}`}})
-            .then(({data}) => setHabits(data))
-            .catch(console.error)
-
-    useEffect(queryHabits, [])
-    const completed = habits.filter(e => e.done).length
+    const completed = today.filter(e => e.done).length
 
     return <FooterContainer>
         <Link to='/habitos'><p>Hábitos</p></Link>
         <Link to='/hoje'>
             <ProgressbarContainer>
                 <CircularProgressbarWithChildren
-                    value={today}
+                    value={completed/today.length *100}
                     background={true}
                     backgroundPadding={6}
                     styles={buildStyles({

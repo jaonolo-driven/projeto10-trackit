@@ -1,24 +1,34 @@
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 import styled from 'styled-components'
+import axios from "axios"
 
-import { UserContext } from "../../contexts/UserContext"
+import { UserContext, TodayContext } from "../../contexts/UserContext"
 import Header from "../Header"
 import Footer from "../Footer"
 
 const PrivateScreens = () => {
     const {user} = useContext(UserContext)
+    const [today, setToday] = useState([])
+
+    const queryHabits = () => 
+        axios
+            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${user.token}`}})
+            .then(({data}) => setToday(data))
+            .catch(console.error)
+
+    useEffect(queryHabits, [])
 
     if(user === null)
         return <Navigate to='/'/>
 
-    return <>
+    return <TodayContext.Provider value={{today, setToday, queryHabits}}>
         <Header profile={user.image}/>
         <PageContainer>
             <Outlet/>
         </PageContainer>
-        <Footer/>
-    </>
+        <Footer today={today}/>
+    </TodayContext.Provider>
 }
 
 export default PrivateScreens

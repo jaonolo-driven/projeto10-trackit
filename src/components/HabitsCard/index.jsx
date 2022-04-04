@@ -3,10 +3,11 @@ import { Bars } from 'react-loader-spinner'
 import styled from 'styled-components'
 import axios from 'axios'
 
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext, TodayContext } from '../../contexts/UserContext'
 import { TrashOutline } from 'react-ionicons'
 
 const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setCreating}) => {
+    const {queryHabits: queryTodayHabits} = useContext(TodayContext)
     const [formData, setData] = useState(null)
     const [disabled, setDisabled] = useState(false)
     const [selectedDays, selectDay] = useState(new Array(7).fill(false))
@@ -39,6 +40,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
                 alert('Salvo com sucesso!')
                 setDisabled(false)
                 queryHabits()
+                queryTodayHabits()
             })
             .catch((response) => {
                 console.error(response)
