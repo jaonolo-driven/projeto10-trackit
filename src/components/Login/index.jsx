@@ -1,10 +1,18 @@
 import axios from 'axios'
 import styled from 'styled-components'
 
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import UserContext from '../../contexts/UserContext'
+
 import LoginForm from './LoginForm'
 import logo from '../../assets/logo.svg'
 
 const Login = () => {
+    const navigate = useNavigate()
+
+    const {setToken} = useContext(UserContext)
+
     const formData = {
         input: [
             {text: 'email', value: 'email'},
@@ -17,7 +25,10 @@ const Login = () => {
     const loginUser = data => {
         axios
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data)
-            .then(({data}) => console.log(data.token))
+            .then(({data}) => {
+                setToken(data.token)
+                navigate('/habitos')
+            })
             .catch(response => console.log(response)) 
     }
 
