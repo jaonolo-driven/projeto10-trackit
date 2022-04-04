@@ -20,7 +20,7 @@ const LoginForm = ({submit, page, update}) => {
     return (
         <fieldset disabled={update}>
             <Form>
-                {page.input.map(e => <input onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
+                {page.input.map((e, i) => <input key={i} onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
                 <button type="submit" onClick={handleSubmit}>{update ? <Bars height={20} color='#ffffff'/> : page.button}</button>
                 <Link className={update ? 'disabledLink' : ''} to={page.redirect.value}><p>{page.redirect.text}</p></Link>
             </Form>

@@ -16,7 +16,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
     useEffect(() => {
         if(data) {
             const a = [...selectedDays]
-            data.days.map(e => {a[e-1] = true})
+            data.days.forEach(e => {a[e-1] = true})
             selectDay(a)
         }
     }, [])
@@ -62,7 +62,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
                 }
                 <div>
                     {['D','S','T','Q','Q','S','S'].map((e, i) => 
-                        <button disabled={!create} className={selectedDays[i] ? 'selected' : ''} onClick={event => selectButton(event, i)}>
+                        <button key={i} disabled={!create} className={selectedDays[i] ? 'selected' : ''} onClick={event => selectButton(event, i)}>
                             {e}
                         </button>
                     )}

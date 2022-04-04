@@ -13,7 +13,7 @@ const PrivateScreens = () => {
 
     const queryHabits = () => 
         axios
-            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${user.token}`}})
+            .get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', { headers: {'Authorization': `Bearer ${user === null ? '' : user.token}`}})
             .then(({data}) => setToday(data))
             .catch(console.error)
 

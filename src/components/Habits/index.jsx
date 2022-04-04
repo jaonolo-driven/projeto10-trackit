@@ -36,7 +36,7 @@ const Habits = () => {
             <h1>Meus Hábitos</h1>
             <button onClick={() => setCreating(true)}><Add color="#ffffff"/></button>
         </AddButtonHolder>
-        {habits.map(e => <HabitsCard data={e} deleteHabit={deleteHabit}/>)}
+        {habits.map((e, i) => <HabitsCard key={i} data={e} deleteHabit={deleteHabit}/>)}
         {creating ? <HabitsCard queryHabits={queryHabits} create={true} setCreating={setCreating}/> : <></>}
         {habits.length === 0 ?
             <p>

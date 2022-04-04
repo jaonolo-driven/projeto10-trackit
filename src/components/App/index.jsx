@@ -13,8 +13,7 @@ import './globals.css'
 
 const App = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-    const [today, setToday] = useState(0);
-
+    
     return (
         <UserContext.Provider value={{user, setUser}}>
             <BrowserRouter>
