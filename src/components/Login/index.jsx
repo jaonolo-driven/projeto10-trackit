@@ -1,7 +1,7 @@
 import axios from 'axios'
 import styled from 'styled-components'
 
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../contexts/UserContext'
 
@@ -10,6 +10,7 @@ import logo from '../../assets/logo.svg'
 
 const Login = () => {
     const navigate = useNavigate()
+    const [update, setUpdate] = useState(false)
 
     const {setUser} = useContext(UserContext)
 
@@ -23,6 +24,7 @@ const Login = () => {
     }
 
     const loginUser = data => {
+        setUpdate(true)
         axios
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data)
             .then(({data}) => {
@@ -30,12 +32,15 @@ const Login = () => {
                 localStorage.setItem("user", JSON.stringify(data))
                 navigate('/habitos')
             })
-            .catch(response => console.log(response)) 
+            .catch(response => {
+                alert(response)
+                setUpdate(false)
+            }) 
     }
 
     return <PageContainer>
         <img src={logo} alt="logo" />
-        <LoginForm submit={loginUser} page={formData}/>
+        <LoginForm submit={loginUser} page={formData} update={update}/>
     </PageContainer>
 }
 
@@ -46,7 +51,7 @@ const PageContainer = styled.main`
     justify-content: flex-start;
     align-items: center;
     gap: 32px;
-    padding-top: 68px
+    padding-top: 68px;
 `
 
 export default Login

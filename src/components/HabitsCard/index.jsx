@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 
 import { UserContext } from '../../contexts/UserContext'
+import { TrashOutline } from 'react-ionicons'
 
 const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setCreating}) => {
     const [formData, setData] = useState(null)
@@ -55,7 +56,7 @@ const HabitsCard = ({queryHabits, deleteHabit, create = false, data = null, setC
             <div className="ahoy">
                 {create ?
                     <input onChange={({target}) => setData(target.value)} type="text" placeholder='nome do hábito'/>
-                    : <DeleteButtonHolder><p>{data.name}</p><button onClick={autoDelete}></button></DeleteButtonHolder> 
+                    : <DeleteButtonHolder><h3>{data.name}</h3><div onClick={autoDelete}><TrashOutline/></div></DeleteButtonHolder> 
                 }
                 <div>
                     {['D','S','T','Q','Q','S','S'].map((e, i) => 
@@ -97,6 +98,12 @@ const Card = styled.form`
         ::placeholder {
             color: #DBDBDB;
         }
+    }
+
+    h3 {
+        font-size: 20px;
+        color: #666666;
+        margin-bottom: 8px;
     }
 
     > div:not(.ahoy) {

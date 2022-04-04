@@ -2,6 +2,7 @@ import axios from "axios"
 import { useContext, useState, useEffect } from "react"
 import { UserContext } from "../../contexts/UserContext"
 
+import { Add } from "react-ionicons"
 import HabitsCard from "../HabitsCard"
 
 import styled from 'styled-components'
@@ -31,7 +32,7 @@ const Habits = () => {
     return <>
         <AddButtonHolder>
             <h1>Meus Hábitos</h1>
-            <button onClick={() => setCreating(true)}>+</button>
+            <button onClick={() => setCreating(true)}><Add color="#ffffff"/></button>
         </AddButtonHolder>
         {habits.map(e => <HabitsCard data={e} deleteHabit={deleteHabit}/>)}
         {creating ? <HabitsCard queryHabits={queryHabits} create={true} setCreating={setCreating}/> : <></>}
@@ -49,11 +50,20 @@ const AddButtonHolder = styled.div`
     justify-content: space-between;
 
     > button {
-        padding: 0 12px;
+        padding: 2px 6px;
         background-color: #52B6FF;
         border: none;
         border-radius: 5px;
         color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 `
 

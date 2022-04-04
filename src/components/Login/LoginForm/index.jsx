@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom'
 import { Bars } from 'react-loader-spinner'
 import styled from 'styled-components'
 
-const LoginForm = ({submit, page}) => {
+const LoginForm = ({submit, page, update}) => {
     const [data, setData] = useState(null)
-    const [disabled, setDisabled] = useState(false)
 
     const handleSubmit = event => {
-        setDisabled(true)
         submit(data)
         event.preventDefault()
     }
@@ -20,11 +18,11 @@ const LoginForm = ({submit, page}) => {
     }
 
     return (
-        <fieldset disabled={disabled}>
+        <fieldset disabled={update}>
             <Form>
                 {page.input.map(e => <input onChange={({target}) => changeData(target.value, e.value)} type="text" placeholder={e.text}/>)}
-                <button type="submit" onClick={handleSubmit}>{disabled ? <Bars height={20} color='#ffffff'/> : page.button}</button>
-                <Link className={disabled ? 'disabledLink' : ''} to={page.redirect.value}><p>{page.redirect.text}</p></Link>
+                <button type="submit" onClick={handleSubmit}>{update ? <Bars height={20} color='#ffffff'/> : page.button}</button>
+                <Link className={update ? 'disabledLink' : ''} to={page.redirect.value}><p>{page.redirect.text}</p></Link>
             </Form>
         </fieldset>
     )

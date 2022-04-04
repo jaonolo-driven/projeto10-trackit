@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { useState, useContext, useEffect } from 'react'
+import { useContext } from 'react'
+import { Checkmark } from 'react-ionicons'
 import styled from 'styled-components'
 
 import { UserContext } from '../../contexts/UserContext'
@@ -23,7 +24,7 @@ const TodayCard = ({queryHabits, data}) => {
                 Seu recorde: <span className={data.currentSequence === data.highestSequence ? 'selected' : ''} >{data.highestSequence}</span>
             </p>
         </div>
-        <SelectButton className={selected ? 'selected' : ''} onClick={toggleSelect}>oi</SelectButton>
+        <SelectButton className={selected ? 'selected' : ''} onClick={toggleSelect}><Checkmark color="#ffffff"/></SelectButton>
     </TCard>
 }
 
@@ -61,5 +62,10 @@ const SelectButton = styled.button`
     color: white;
     width: 70px;
     height: 70px;
-    background-color: #EBEBEB
+    background-color: #EBEBEB;
+
+    svg {
+        height: 40px;
+        width: 40px;
+    }
 `
