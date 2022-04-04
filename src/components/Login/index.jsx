@@ -26,7 +26,7 @@ const Login = () => {
         axios
             .post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', data)
             .then(({data}) => {
-                setToken(data.token)
+                setToken(data)
                 navigate('/habitos')
             })
             .catch(response => console.log(response)) 
